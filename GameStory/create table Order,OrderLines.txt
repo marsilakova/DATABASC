@@ -1,0 +1,140 @@
+
+
+CREATE TABLE Orders (
+	[OrderId] INT Identity NOT NULL,
+	[Name] NVARCHAR(MAX) NULL,
+	[Line1] NVARCHAR(MAX) NULL,
+	[Line2] NVARCHAR(MAX) NULL,
+	[Line3] NVARCHAR(MAX) NULL,
+	[City] NVARCHAR(MAX) NULL,
+	[GiftWrap] BIT NOT NULL,
+	[Dispatched] BIT NOT NULL,
+	CONSTRAINT [PK_dbo.Orders] PRIMARY KEY CLUSTERED ([OrderId] ASC)
+);
+
+CREATE TABLE OrderLines (
+	[OrderLineId] INT IDENTITY NOT NULL,
+	[Quantity] INT NOT NULL,
+	[Game_GameID] INT NULL,
+	[Order_OrderId] INT NULL,
+	CONSTRAINT [PK_dbo.OrderLines] PRIMARY KEY CLUSTERED ([OrderLineId] ASC),
+	CONSTRAINT [FK_dbo.OrderLines_dbo.Games_GameID] FOREIGN KEY
+		([Game_GameID]) REFERENCES [dbo].[Games] ([GameID]),
+	CONSTRAINT [FK_dbo.OrderLines_dbo.Order_OrderId] FOREIGN KEY
+		([Order_OrderId]) REFERENCES [dbo].[Orders] ([OrderId])
+);
+
+CREATE TABLE `gamestore`.`order` (
+  `OrderId` INT GENERATED ALWAYS AS () VIRTUAL,
+  `Name` NVARCHAR(150) NULL,
+  `Line1` NVARCHAR(150) NULL,
+  `Line2` NVARCHAR(150) NULL,
+  `Line3` NVARCHAR(150) NULL,
+  `City` NVARCHAR(150) NULL,
+  `GiftWrap` BIT(150) NOT NULL,
+  `Dispatched` BIT(150) NULL,
+  PRIMARY KEY (`OrderId`));
+
+CREATE TABLE `order` (
+  
+`OrderId` INT(25) NOT NULL GENERATED ,
+  
+`Name` NVARCHAR(150) NULL,
+ 
+ `Line1` NVARCHAR(150) NULL,
+ 
+ `Line2` NVARCHAR(150) NULL,
+ 
+ `Line3` NVARCHAR(150) NULL,
+  
+`City` NVARCHAR(150) NULL,
+ 
+ `GiftWrap` BIT(150) NOT NULL,
+ 
+ `Dispatched` BIT(150) NULL,
+ 
+ PRIMARY KEY (`OrderId`)) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+---------------
+CREATE TABLE `games` (
+  `GameID` int(11) NOT NULL AUTO_INCREMENT,
+  `gName` varchar(100) NOT NULL,
+  `Description` varchar(500) NOT NULL,
+  `Category` varchar(50) NOT NULL,
+  `Price` decimal(16,2) NOT NULL,
+  `UserID` int(20) NOT NULL,
+  PRIMARY KEY (`GameID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+
+--------------------
+create table `order` (
+ 
+ 
+`OrderId` INT(25) NOT NULL auto_increment,
+ 
+ 
+`Name` VARCHAR(150) ,
+ 
+
+ `Line1` VARCHAR(150),
+ 
+
+ `Line2` VARCHAR(150) ,
+ 
+
+ `Line3` VARCHAR(150) ,
+  
+
+`City` VARCHAR(150) ,
+ 
+ 
+`GiftWrap` BIT(50) NOT NULL,
+ 
+
+ `Dispatched` BIT(50) ,
+ 
+
+ PRIMARY KEY (`OrderId`)) ;
+
+-
+CREATE TABLE `gamestore`.`orderlines` 
+(
+  `OrderLineId` INT NOT NULL,
+ 
+ `Quantity` INT NOT NULL,
+  
+`Game_GameID` INT NULL,
+ 
+ `Order_OrderId` INT NULL,
+ 
+ PRIMARY KEY (`OrderLineId` asc));
+
+
+DROP TABLE `orderlines`
+
+
+
+CREATE TABLE `gamestore`.`orderlines` (
+  `OrderLineId` INT NOT NULL AUTO_INCREMENT,
+ 
+ `Quantity` INT NOT NULL,
+  `Game_GameID` INT NULL,
+ 
+ `Order_OrderId` INT NULL,
+  PRIMARY KEY (`OrderLineId`),
+ 
+ INDEX `Game_GameID_idx` (`Game_GameID` ASC),
+ 
+ INDEX `Order_OrderId_idx` (`Order_OrderId` ASC),
+  CONSTRAINT `Game_GameID`
+    FOREIGN KEY (`Game_GameID`)
+    REFERENCES `gamestore`.`games` (`GameID`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+ 
+ CONSTRAINT `Order_OrderId`
+    FOREIGN KEY (`Order_OrderId`)
+    REFERENCES `gamestore`.`orders` (`OrderId`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE);
